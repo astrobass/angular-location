@@ -1,23 +1,17 @@
 angular.module('location', [])
-	.service('location', function() {
-		var currentLocation;
+	.service('location', function($q) {
 		this.getLocation = function() {
-			var latitude, longitude;
+			var def = $q.defer();
 	    if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(function(location) {
-	        currentLocation = {
-	        	latitude: location.coords.latitude,
-	        	longitude: location.coords.longitude
-	        }
+				navigator.geolocation.getCurrentPosition(function(loc) {
+					def.resolve({
+						latitude: loc.coords.latitude,
+						longitude: loc.coords.longitude
+					});
 	      });
-	      if( typeof currentLocation === 'undefined' ) {
-	      	console.log('Unable to get current position. Probably a permissions issue.');
-	      	currentLocation = {};
-	      }
 			} else {
 				console.log('No geolocation available');
-				currentLocation = {};
 			}
-			return currentLocation;
+			return def.promise;
 		};
-	})
+	});

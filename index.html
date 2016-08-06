@@ -1,0 +1,18 @@
+<html>
+  <head>
+  </head>
+  <body ng-app="myApp" ng-controller="appCtrl">
+    Location: {{ latitude }} {{ longitude }}
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script type="text/javascript" src="angular-location.js"></script>
+    <script type="text/javascript">
+      var app = angular.module('myApp', ['location']);
+      app.controller('appCtrl', function($scope, location) {
+        location.getLocation().then(function(loc) {
+          $scope.latitude = loc.latitude;
+          $scope.longitude = loc.longitude;
+        });
+      });
+    </script>
+  </body>
+</html>
